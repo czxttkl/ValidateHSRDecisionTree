@@ -11,11 +11,36 @@ import com.google.gson.Gson;
 import com.google.gson.internal.LinkedTreeMap;
 
 public class JsonTreeTest {
-
+	
 	/**
-	 * @param args
+	 * @param n n rungs
+	 * @param k k jars
+	 * @param q q questions
 	 */
+	public static int n;
+	public static int k;
+	public static int q;
+	
 	public static void main(String[] args) {
+		
+		if (args.length != 5)
+			System.out.println("Incorrect parameters");
+		try {
+			n = Integer.parseInt(args[0]);
+			k = Integer.parseInt(args[1]);
+			q = Integer.parseInt(args[2]);	
+			
+			if ( n < 0 || k < 0 || q < 0)
+				throw new NumberFormatException();
+				
+		} catch (NumberFormatException e) {
+	        System.err.println("Argument" + " must be an positive integer");
+	        System.exit(1);
+	    }
+
+
+		
+		
 		Gson gson = new Gson();
 //		 Root root1 =
 //		gson.fromJson("{ \"decisiontree\":[1,{\"h\":0},[2,{\"h\":1},[3,{\"h\":2},[4, {\"h\":3}, {\"h\":4}]]]]}",
@@ -25,14 +50,20 @@ public class JsonTreeTest {
 //				.fromJson(
 //						"{ \"decisiontree\":[2, [1, {\"h\":0}, {\"h\":1}], [3, {\"h\":2}, {\"h\":4}]]}",
 //						Root.class);
-		Root root1 = gson.fromJson("{\"decisiontree\":[4, [2, [1, {\"h\":0}, {\"h\":1}], [3, {\"h\":2}, {\"h\":3}] ], [6, [5, {\"h\":4}, {\"h\":5} ], [7, {\"h\":6}, [8, {\"h\":7}, {\"h\":8}] ] ] ]}", Root.class);
+		Root root1 = gson.fromJson("{\"decision_tree\":[4, [2, [1, {\"h\":0}, {\"h\":1}], [3, {\"h\":2}, {\"h\":3}] ], [6, [5, {\"h\":4}, {\"h\":5} ], [7, {\"h\":6}, [8, {\"h\":7}, {\"h\":8}] ] ] ]}", Root.class);
 		
-		checkLeftSubtree(root1.decisiontree[1], root1.getN());
-		checkRightSubtree(root1.decisiontree[2], root1.getN());
+		if(root1 != null) {
+		checkLeftSubtree(root1.decision_tree[1], root1.getN());
+		checkRightSubtree(root1.decision_tree[2], root1.getN());
 		checkQEdges(root1, 3);
 		checkKYes(root1, 2);
 		checkInternalNode(root1, 9);
 		checkLeaf(root1, 9);
+		}else {
+			System.out.println("Invalid json string.");
+		}
+			
+		
 	}
 
 	
@@ -41,8 +72,8 @@ public class JsonTreeTest {
 		Arrays.fill(record, 0);
 		System.out.print("Check if each rung 1..n-1 appears exactly once as internal node of the tree: ");
 		try {
-			record = recordInternalNode(root1.decisiontree[1], record);
-			record = recordInternalNode(root1.decisiontree[2], record);
+			record = recordInternalNode(root1.decision_tree[1], record);
+			record = recordInternalNode(root1.decision_tree[2], record);
 			record[root1.getN()]++;
 			
 			for ( int i = 1; i < n; i++) {
@@ -97,8 +128,8 @@ public class JsonTreeTest {
 		Arrays.fill(record, 0);
 		System.out.print("Check if each rung 0..n-1 appears exactly once as a leaf: ");
 		try {
-			record = recordLeaf(root1.decisiontree[1], record);
-			record = recordLeaf(root1.decisiontree[2], record);
+			record = recordLeaf(root1.decision_tree[1], record);
+			record = recordLeaf(root1.decision_tree[2], record);
 			
 			for(int p = 0; p < n; p++) {
 				int q = record[p];
@@ -239,8 +270,8 @@ public class JsonTreeTest {
 		if (o instanceof LinkedTreeMap)
 			return 0;
 		if (o instanceof Root)
-			return Math.max(maxDepth(((Root) o).decisiontree[1]),
-					maxDepth(((Root) o).decisiontree[2])) + 1;
+			return Math.max(maxDepth(((Root) o).decision_tree[1]),
+					maxDepth(((Root) o).decision_tree[2])) + 1;
 
 		// Then o must be arraylist
 		ArrayList oa = (ArrayList) o;
@@ -351,8 +382,8 @@ public class JsonTreeTest {
 	}
 
 	public static void checkKYes(Root root, int k) {
-		int leftTree = maxLeftEdges(root.decisiontree[1]) + 1;
-		int rightTree = maxLeftEdges(root.decisiontree[2]);
+		int leftTree = maxLeftEdges(root.decision_tree[1]) + 1;
+		int rightTree = maxLeftEdges(root.decision_tree[2]);
 		int maxLeftEdges = Math.max(leftTree, rightTree);
 		System.out.println("Check if there are at most " + k + " yes from the root to any leaf: " + (maxLeftEdges <= k? "yes":"no"));
 		System.out.println("The maximum of left edges in the tree is " + maxLeftEdges);
