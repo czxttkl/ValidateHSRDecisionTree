@@ -16,25 +16,6 @@ public class JsonTreeTest {
 	 * @param args
 	 */
 	public static void main(String[] args) {
-		// TODO Auto-generated method stub
-		/*Root root = new Root(1);
-		root.setLeftNode(new Leaf(0));
-
-		Object[] d = new Object[3];
-		d[0] = 3;
-		d[1] = new Leaf(2);
-		d[2] = new Leaf(3);
-
-		Object[] c = new Object[3];
-		c[0] = 2;
-		c[1] = new Leaf(1);
-		c[2] = d;
-
-		root.setRightNode(c);
-
-		String j = MyJsonParser.parseTreeToJson(root);
-		System.out.println(j);*/
-
 		Gson gson = new Gson();
 //		 Root root1 =
 //		gson.fromJson("{ \"decisiontree\":[1,{\"h\":0},[2,{\"h\":1},[3,{\"h\":2},[4, {\"h\":3}, {\"h\":4}]]]]}",
@@ -58,7 +39,7 @@ public class JsonTreeTest {
 	public static void checkInternalNode(Root root1, int n) {
 		int[] record = new int[n];
 		Arrays.fill(record, 0);
-		System.out.println("Check if each rung 1..n-1 appears exactly once as internal node of the tree: ");
+		System.out.print("Check if each rung 1..n-1 appears exactly once as internal node of the tree: ");
 		try {
 			record = recordInternalNode(root1.decisiontree[1], record);
 			record = recordInternalNode(root1.decisiontree[2], record);
