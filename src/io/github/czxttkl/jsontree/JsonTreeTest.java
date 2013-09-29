@@ -3,6 +3,11 @@ import io.github.czxttkl.jsontree.exception.DuplicateException;
 import io.github.czxttkl.jsontree.exception.NotAppearException;
 import io.github.czxttkl.jsontree.exception.OutBoundException;
 
+import java.io.BufferedReader;
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.FileReader;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Stack;
@@ -23,8 +28,11 @@ public class JsonTreeTest {
 	
 	public static void main(String[] args) {
 		
-		if (args.length != 5)
-			System.out.println("Incorrect parameters");
+		if (args.length != 5) {
+			System.out.println("Invalid arguments length.");
+			System.exit(1);
+		}
+		
 		try {
 			n = Integer.parseInt(args[0]);
 			k = Integer.parseInt(args[1]);
@@ -34,33 +42,49 @@ public class JsonTreeTest {
 				throw new NumberFormatException();
 				
 		} catch (NumberFormatException e) {
-	        System.err.println("Argument" + " must be an positive integer");
+	        System.err.println("Invalid arguments. Argument must be an positive integer");
 	        System.exit(1);
 	    }
 
-
-		
-		
 		Gson gson = new Gson();
-//		 Root root1 =
-//		gson.fromJson("{ \"decisiontree\":[1,{\"h\":0},[2,{\"h\":1},[3,{\"h\":2},[4, {\"h\":3}, {\"h\":4}]]]]}",
-//		 Root.class);
+		Root root1 = null;
 
-//		Root root1 = gson
-//				.fromJson(
-//						"{ \"decisiontree\":[2, [1, {\"h\":0}, {\"h\":1}], [3, {\"h\":2}, {\"h\":4}]]}",
-//						Root.class);
-		Root root1 = gson.fromJson("{\"decision_tree\":[4, [2, [1, {\"h\":0}, {\"h\":1}], [3, {\"h\":2}, {\"h\":3}] ], [6, [5, {\"h\":4}, {\"h\":5} ], [7, {\"h\":6}, [8, {\"h\":7}, {\"h\":8}] ] ] ]}", Root.class);
+		if (args[3].equals("-s")){
+			String json = args[4];
+			root1 = gson.fromJson(json, Root.class);
+		} else {
+			if(args[3].equals("-f")) {
+				BufferedReader br;
+				try {
+					br = new BufferedReader(new FileReader(new File(args[4]).getCanonicalPath()));
+					root1 = gson.fromJson(br, Root.class);
+				} catch (FileNotFoundException e) {
+					System.out.println("Invalid arguments. Invalid file name.");
+					System.exit(1);
+				} catch (IOException e) {
+					System.out.println("Invalid arguments. Can't read file.");
+					System.exit(1);
+				}
+			}
+			else {
+				System.out.println("Invalid arguments. Specify from String or from File.");
+				System.exit(1);
+			}
+			
+		}
 		
-		if(root1 != null) {
-		checkLeftSubtree(root1.decision_tree[1], root1.getN());
-		checkRightSubtree(root1.decision_tree[2], root1.getN());
-		checkQEdges(root1, 3);
-		checkKYes(root1, 2);
-		checkInternalNode(root1, 9);
-		checkLeaf(root1, 9);
-		}else {
+//		String json = "{\"decision_tree\":[4, [2, [1, {\"h\":0}, {\"h\":1}], [3, {\"h\":2}, {\"h\":3}] ], [6, [5, {\"h\":4}, {\"h\":5} ], [7, {\"h\":6}, [8, {\"h\":7}, {\"h\":8}] ] ] ]}";
+		
+		if (root1 != null) {
+			checkLeftSubtree(root1.decision_tree[1], root1.getN());
+			checkRightSubtree(root1.decision_tree[2], root1.getN());
+			checkQEdges(root1, 3);
+			checkKYes(root1, 2);
+			checkInternalNode(root1, 9);
+			checkLeaf(root1, 9);
+		} else {
 			System.out.println("Invalid json string.");
+			System.exit(1);
 		}
 			
 		
