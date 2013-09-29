@@ -1,30 +1,36 @@
 ValidateJsonDecisionTree
 ========================
 
-HSR Reference:
+HSR Reference
+--------------------------------------
 
 http://www.ccs.neu.edu/home/lieber/courses/algorithms/cs5800/f13/piazza/hsr/HSR-problem-CS5800-1.pdf
 
-JSON notation norms:
+JSON Notation Norms
+--------------------------------------
 
 The grammar and object structure would be in an EBNF-like notation:
 
+```bash
 DTH = "{" "\"decision tree\"" ":" <dt> DT.
-
 DT = Compound | Leaf.
-
 Compound = "[" <q> int "," <yes> DT "," <no> DT "]".
-
 Leaf = "{" "\"h\" " ":" <leaf> int "}".
+```
 
+Example
+--------------------------------------
 
-Example:
+```json
 // h = highest safe rung or leaf
 { "decision tree" :
 [1,{"h":0},[2,{"h":1},[3,{"h":2},{"h":3}]]]
 }
+```
 
 
+Validation
+--------------------------------------
 A decision tree in DT for HSR(n,k,q) must satisfy the following properties:
 
 1) the BST (Binary Search Tree Property): For any left subtree: the root is one larger than 
