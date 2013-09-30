@@ -27,6 +27,14 @@ public class HSR {
 	public static int k;
 	public static int q;
 	
+	public static boolean leftSubTreeValidated = false;
+	public static boolean rightSubTreeValidated = false;
+	public static boolean qEdgesValidated = false;
+	public static boolean kYesValidated = false;
+	public static boolean internalNodeValidated = false;
+	public static boolean leafValidated = false;
+
+	
 	public static void main(String[] args) {
 		
 		if (args.length != 5) {
@@ -83,7 +91,7 @@ public class HSR {
 		
 //		String json = "{\"decision_tree\":[4, [2, [1, {\"h\":0}, {\"h\":1}], [3, {\"h\":2}, {\"h\":3}] ], [6, [5, {\"h\":4}, {\"h\":5} ], [7, {\"h\":6}, [8, {\"h\":7}, {\"h\":8}] ] ] ]}";
 		
-		if (root1 != null) {
+		if (root1 != null && root1.decision_tree!=null && root1.decision_tree[0]!=null && root1.decision_tree[1]!=null && root1.decision_tree[2]!=null) {
 			checkLeftSubtree(root1.decision_tree[1], root1.getN());
 			checkRightSubtree(root1.decision_tree[2], root1.getN());
 			checkQEdges(root1, q);
@@ -94,6 +102,15 @@ public class HSR {
 			System.out.println("Invalid json string.");
 			System.exit(1);
 		}
+		
+		System.out.println("");
+		System.out.println("--------------------------------------");
+		if (leftSubTreeValidated && rightSubTreeValidated && qEdgesValidated && kYesValidated && internalNodeValidated && leafValidated) {
+			System.out.println("Your decision tree is validated.");
+		} else {
+			System.out.println("Your decision tree is not validated.");
+		}
+		System.out.println("--------------------------------------");
 			
 		
 	}
@@ -102,7 +119,8 @@ public class HSR {
 	public static void checkInternalNode(Root root1, int n) {
 		int[] record = new int[n];
 		Arrays.fill(record, 0);
-		System.out.print("Check if each rung 1..n-1 appears exactly once as internal node of the tree: ");
+		System.out.println("");
+		System.out.print("Check if each rung 1..n-1 appears exactly once as internal node: ");
 		try {
 			record = recordInternalNode(root1.decision_tree[1], record);
 			record = recordInternalNode(root1.decision_tree[2], record);
@@ -121,6 +139,7 @@ public class HSR {
 			}
 			
 			System.out.println("yes");
+			internalNodeValidated = true;
 			
 		} catch (OutBoundException e) {
 			System.out.println("no");
@@ -158,6 +177,7 @@ public class HSR {
 	public static void checkLeaf(Root root1, int n) {
 		int[] record = new int[n];
 		Arrays.fill(record, 0);
+		System.out.println("");
 		System.out.print("Check if each rung 0..n-1 appears exactly once as a leaf: ");
 		try {
 			record = recordLeaf(root1.decision_tree[1], record);
@@ -172,7 +192,9 @@ public class HSR {
 						throw new NotAppearException(p);
 				}
 			}
+			
 			System.out.println("yes");
+			leafValidated = true;
 			
 		} catch (OutBoundException e) {
 			System.out.println("no");
@@ -285,14 +307,20 @@ public class HSR {
 	
 	public static void checkRightSubtree(Object object, int n) {
 		int min = findSmallest(object);
+		System.out.println("");
 		System.out.println("Check if the root is equal to the smallest node in the right subtree: " + (n==min?"yes":"no"));
+		if( n == min )
+			rightSubTreeValidated = true;
 		System.out.println("The root is " + n + ". The smallest node in the right subtree is " + min);
 	}
 	
 	
 	public static void checkLeftSubtree(Object object, int n) {
 		int max = findLargest(object);
+		System.out.println("");
 		System.out.println("Check if the root is one larger than the largest node in the left subtree: " + (n>max?"yes":"no") );
+		if( n > max )
+			leftSubTreeValidated = true;
 		System.out.println("The root is " + n + ". The largest node in the left subtree is " + max);
 	}
 
@@ -319,8 +347,11 @@ public class HSR {
 	
 	public static void checkQEdges(Root root, int q) {
 		int maxDepth = maxDepth(root);
+		System.out.println("");
 		System.out.println("Check if the longest root-leaf path has " + q
-				+ " edges: " + (maxDepth > q ? "no" : "yes"));
+				+ " edges: " + ( q >= maxDepth ? "yes" : "no"));
+		if( q >= maxDepth )
+			qEdgesValidated = true;
 		System.out.println("The max depth of the tree: " + maxDepth);
 	}
 
@@ -417,7 +448,10 @@ public class HSR {
 		int leftTree = maxLeftEdges(root.decision_tree[1]) + 1;
 		int rightTree = maxLeftEdges(root.decision_tree[2]);
 		int maxLeftEdges = Math.max(leftTree, rightTree);
+		System.out.println("");
 		System.out.println("Check if there are at most " + k + " yes from the root to any leaf: " + (maxLeftEdges <= k? "yes":"no"));
+		if ( maxLeftEdges <= k )
+			kYesValidated = true;
 		System.out.println("The maximum of left edges in the tree is " + maxLeftEdges);
 	}
 	
