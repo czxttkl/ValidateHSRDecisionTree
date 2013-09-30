@@ -13,6 +13,8 @@ java -jar hsr.jar <n> <k> <q> {<-s "json_string"> | <-f json_file_path_name>}
 * `n`: rungs
 * `k`: jars
 * `q`: questions
+* `-s "json_string"`: input your json string manually
+* `-f json_file_path_name`: import your json string from a file
 
 
 Example
