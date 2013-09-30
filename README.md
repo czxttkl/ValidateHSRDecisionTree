@@ -3,11 +3,11 @@ ValidateJsonDecisionTree
 
 Usage
 --------------------------------------
-* Download hsr.jar
+* Download 'hsr.jar': https://db.tt/onEEoTfa
 * Execute
 
 ```bash
-java -jar hsr.jar <n> <k> <q> {<-s "json_string"> | <-f file_path_name>}
+java -jar hsr.jar <n> <k> <q> {<-s "json_string"> | <-f json_file_path_name>}
 ```
 
 Example
@@ -15,6 +15,8 @@ Example
 ```bash
 java -jar hsr.jar 9 3 4 -s "{"decision_tree":[4, [2, [1, {"h":0}, {"h":1}], [3, {"h":2}, {"h":3}] ], [6, [5, {"h":4}, {"h":5} ], [7, {"h":6}, [8, {"h":7}, {"h":8}] ] ] ]}"
 ```
+
+or
 
 ```bash
 java -jar hsr.jar 9 3 4 -f test.json
