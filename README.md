@@ -3,7 +3,7 @@ ValidateJsonDecisionTree
 
 Usage
 --------------------------------------
-* Download 'hsr.jar': https://db.tt/onEEoTfa
+* Download `hsr.jar`: https://db.tt/onEEoTfa
 * Execute
 
 ```bash
