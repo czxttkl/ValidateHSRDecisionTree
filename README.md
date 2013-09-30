@@ -5,8 +5,19 @@ Usage
 --------------------------------------
 * Download hsr.jar
 * Execute
+
 ```bash
-java -jar hsr.jar <n> <k> <q> {<-s json_string> | <-f file_path_name>}
+java -jar hsr.jar <n> <k> <q> {<-s "json_string"> | <-f file_path_name>}
+```
+
+Example
+--------------------------------------
+```bash
+java -jar hsr.jar 9 3 4 -s "{"decision_tree":[4, [2, [1, {"h":0}, {"h":1}], [3, {"h":2}, {"h":3}] ], [6, [5, {"h":4}, {"h":5} ], [7, {"h":6}, [8, {"h":7}, {"h":8}] ] ] ]}"
+```
+
+```bash
+java -jar hsr.jar 9 3 4 -f test.json
 ```
 
 HSR Reference
@@ -21,7 +32,7 @@ JSON Notation Norms
 The grammar and object structure would be in an EBNF-like notation:
 
 ```bash
-DTH = "{" "\"decision tree\"" ":" <dt> DT.
+DTH = "{" "\"decision_tree\"" ":" <dt> DT.
 DT = Compound | Leaf.
 Compound = "[" <q> int "," <yes> DT "," <no> DT "]".
 Leaf = "{" "\"h\" " ":" <leaf> int "}".
@@ -32,7 +43,7 @@ Example
 
 ```json
  // h = highest safe rung or leaf
-{ "decision tree" :
+{ "decision_tree" :
 [1,{"h":0},[2,{"h":1},[3,{"h":2},{"h":3}]]]
 }
 ```
