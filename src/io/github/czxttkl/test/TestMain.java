@@ -47,8 +47,8 @@ public class TestMain {
 
 		HSRTree hsrTreeRightRight = new HSRTree(7);
 		hsrTreeRightRight.setLeftNode(new Leaf(6));
-		HSRTree hsrTreeRightRightRight = new HSRTree(7);
-		hsrTreeRightRightRight.setLeftNode(new Leaf(7));
+		HSRTree hsrTreeRightRightRight = new HSRTree(8);
+		hsrTreeRightRightRight.setLeftNode(new Leaf(8));
 		hsrTreeRightRightRight.setRightNode(new Leaf(8));
 
 		hsrTreeRightRight.setRightNode(hsrTreeRightRightRight);
@@ -70,6 +70,7 @@ public class TestMain {
 		checkQEdges(root1, 3);
 		checkKYes(root1, 3);
 		checkInternalNode(root1, 9);
+		checkLeaf(root1, 9);
 	}
 
 	public static void checkLeftSubtree(Node node, int n) {
@@ -186,6 +187,57 @@ public class TestMain {
 				throw new OutBoundException(i);
 			record = recordInternalNode(((HSRTree) node).getLeftNode(), record);
 			record = recordInternalNode(((HSRTree) node).getRightNode(), record);
+			return record;
+		}
+	}
+	
+	public static void checkLeaf(HSRTree root, int n) {
+		int[] record = new int[n];
+		Arrays.fill(record, 0);
+		System.out.println("");
+		System.out.print("Check if each rung 0..n-1 appears exactly once as a leaf: ");
+		try {
+			record = recordLeaf(root, record);
+			for(int p = 0; p < n; p++) {
+				int q = record[p];
+				if ( q!=1 ) {
+					if (q>1)
+						throw new DuplicateException(p);
+					else
+						throw new NotAppearException(p);
+				}
+			}
+			System.out.println("yes");
+			leafValidated = true;
+		} catch (OutBoundException e) {
+			System.out.println("no");
+			if(e.outIndex > (n-1)){				
+				System.out.println("Exists a leaf with value " + e.outIndex + " that is larger than " + (n-1));
+			}else {
+				System.out.println("Exists a leaf with value " + e.outIndex + " that is smaller than 0");
+			}
+		} catch (DuplicateException e) {
+			System.out.println("no");
+			System.out.println("Exists more than one leaves with the same value: " + e.dupIndex);
+		} catch (NotAppearException e) {
+			System.out.println("no");
+			System.out.println("Rung " + e.noIndex + " didn't show up as a leaf.");
+		}
+	}
+	
+	public static int[] recordLeaf(Node node, int[] record) throws OutBoundException {
+		if (node instanceof Leaf) {
+			int h = ((Leaf)node).getH();
+			if(h <= record.length-1 && h >=0) {
+				record[h]++;
+			} else {
+				throw new OutBoundException(h);
+			}
+			return record;
+		} else {
+			int i = ((HSRTree) node).getRung();
+			record = recordLeaf(((HSRTree) node).getLeftNode(), record);
+			record = recordLeaf(((HSRTree) node).getRightNode(), record);
 			return record;
 		}
 	}
