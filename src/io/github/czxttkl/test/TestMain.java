@@ -1,6 +1,7 @@
 package io.github.czxttkl.test;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
@@ -10,6 +11,9 @@ import io.github.czxttkl.jsontree.HSRTree;
 import io.github.czxttkl.jsontree.InterfaceDeserializer;
 import io.github.czxttkl.jsontree.Leaf;
 import io.github.czxttkl.jsontree.Node;
+import io.github.czxttkl.jsontree.exception.DuplicateException;
+import io.github.czxttkl.jsontree.exception.NotAppearException;
+import io.github.czxttkl.jsontree.exception.OutBoundException;
 
 public class TestMain {
 	public static boolean leftSubTreeValidated = false;
@@ -43,7 +47,7 @@ public class TestMain {
 
 		HSRTree hsrTreeRightRight = new HSRTree(7);
 		hsrTreeRightRight.setLeftNode(new Leaf(6));
-		HSRTree hsrTreeRightRightRight = new HSRTree(8);
+		HSRTree hsrTreeRightRightRight = new HSRTree(7);
 		hsrTreeRightRightRight.setLeftNode(new Leaf(7));
 		hsrTreeRightRightRight.setRightNode(new Leaf(8));
 
@@ -61,10 +65,11 @@ public class TestMain {
 
 		HSRTree root1 = gson.fromJson(jsonString, HSRTree.class);
 
-		checkLeftSubtree(root1.getLeftNode(), root1.getN());
-		checkRightSubtree(root1.getRightNode(), root1.getN());
+		checkLeftSubtree(root1.getLeftNode(), root1.getRung());
+		checkRightSubtree(root1.getRightNode(), root1.getRung());
 		checkQEdges(root1, 3);
 		checkKYes(root1, 3);
+		checkInternalNode(root1, 9);
 	}
 
 	public static void checkLeftSubtree(Node node, int n) {
@@ -126,17 +131,62 @@ public class TestMain {
 	}
 
 	/**
-	 * @param side 
-	 *           1: left child of its parent;     -1: right child of its parent;     0: no parent;
+	 * @param side
+	 *            1: left child of its parent; -1: right child of its parent; 0: no parent;
 	 */
 	public static int maxLeftEdges(Node node, int side) {
 		if (node instanceof Leaf) {
-				return 0;
+			return 0;
 		} else {
-			return Math.max(maxLeftEdges(((HSRTree)node).getLeftNode(), 1)+1, maxLeftEdges(((HSRTree)node).getRightNode(), -1));
+			return Math.max(maxLeftEdges(((HSRTree) node).getLeftNode(), 1) + 1, maxLeftEdges(((HSRTree) node).getRightNode(), -1));
 		}
-		
-		
 	}
 
+	public static void checkInternalNode(HSRTree root, int n) {
+		int[] record = new int[n];
+		Arrays.fill(record, 0);
+		System.out.println("");
+		System.out.print("Check if each rung 1..n-1 appears exactly once as internal node: ");
+		try {
+			record = recordInternalNode(root, record);
+			for (int i = 1; i < n; i++) {
+				int j = record[i];
+				if (j != 1) {
+					if (j > 1)
+						throw new DuplicateException(i);
+					else
+						throw new NotAppearException(i);
+				}
+			}
+			System.out.println("yes");
+			internalNodeValidated = true;
+		} catch (OutBoundException e) {
+			System.out.println("no");
+			if (e.outIndex > (n - 1))
+				System.out.println("Exists a node with value " + e.outIndex + " that is larger than " + (n - 1));
+			else
+				System.out.println("Exists a node with value " + e.outIndex + " that is smaller than 0");
+		} catch (DuplicateException e) {
+			System.out.println("no");
+			System.out.println("Exists more than one nodes with the same value: " + e.dupIndex);
+		} catch (NotAppearException e) {
+			System.out.println("no");
+			System.out.println("Rung " + e.noIndex + " didn't show up as a internal node.");
+		}
+	}
+
+	public static int[] recordInternalNode(Node node, int[] record) throws OutBoundException {
+		if (node instanceof Leaf) {
+			return record;
+		} else {
+			int i = ((HSRTree) node).getRung();
+			if (i <= record.length - 1 && i >= 1)
+				record[i]++;
+			else
+				throw new OutBoundException(i);
+			record = recordInternalNode(((HSRTree) node).getLeftNode(), record);
+			record = recordInternalNode(((HSRTree) node).getRightNode(), record);
+			return record;
+		}
+	}
 }

@@ -42,7 +42,7 @@ public class HSRTree implements Node {
 	}
 	
 	/** Return the rung the current node represents*/
-	public int getN() {
+	public int getRung() {
 		return rung;
 	}
 	

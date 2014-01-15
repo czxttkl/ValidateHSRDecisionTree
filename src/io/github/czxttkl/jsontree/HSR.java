@@ -96,8 +96,8 @@ public class HSR {
 		
 		
 		if (root1 != null && root1.decision_tree!=null && root1.decision_tree[0]!=null && root1.decision_tree[1]!=null && root1.decision_tree[2]!=null) {
-			checkLeftSubtree(root1.decision_tree[1], root1.getN());
-			checkRightSubtree(root1.decision_tree[2], root1.getN());
+			checkLeftSubtree(root1.decision_tree[1], root1.getRung());
+			checkRightSubtree(root1.decision_tree[2], root1.getRung());
 			checkQEdges(root1, q);
 			checkKYes(root1, k);
 			checkInternalNode(root1, n);
@@ -128,7 +128,7 @@ public class HSR {
 		try {
 			record = recordInternalNode(root1.decision_tree[1], record);
 			record = recordInternalNode(root1.decision_tree[2], record);
-			record[root1.getN()]++;
+			record[root1.getRung()]++;
 			
 			for ( int i = 1; i < n; i++) {
 				int j = record[i];
