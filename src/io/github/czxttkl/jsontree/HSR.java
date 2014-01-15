@@ -37,6 +37,11 @@ public class HSR {
 	
 	public static void main(String[] args) {
 		
+		String json1 = "{\"decision_tree\":[4, [2, [1, {\"h\":0}, {\"h\":1}], [3, {\"h\":2}, {\"h\":3}] ], [6, [5, {\"h\":4}, {\"h\":5} ], [7, {\"h\":6}, [8, {\"h\":7}, {\"h\":8}] ] ] ]}";
+		Gson gson1 = new Gson();
+		HSRTree rootTest = gson1.fromJson(json1, HSRTree.class);
+		
+		
 		if (args.length != 5) {
 			System.out.println("Invalid arguments length.");
 			System.exit(1);
@@ -56,12 +61,12 @@ public class HSR {
 	    }
 
 		Gson gson = new Gson();
-		Root root1 = null;
+		HSRTree root1 = null;
 
 		if (args[3].equals("-s")){
 			String json = args[4];
 			try {
-			root1 = gson.fromJson(json, Root.class);
+			root1 = gson.fromJson(json, HSRTree.class);
 			} catch (JsonSyntaxException e) {
 				System.out.println("Invalid arguments. Invalid json string.");
 				System.exit(1);
@@ -71,7 +76,7 @@ public class HSR {
 				BufferedReader br;
 				try {
 					br = new BufferedReader(new FileReader(new File(args[4]).getCanonicalPath()));
-					root1 = gson.fromJson(br, Root.class);
+					root1 = gson.fromJson(br, HSRTree.class);
 				} catch (FileNotFoundException e) {
 					System.out.println("Invalid arguments. Invalid file name.");
 					System.exit(1);
@@ -89,7 +94,6 @@ public class HSR {
 			
 		}
 		
-//		String json = "{\"decision_tree\":[4, [2, [1, {\"h\":0}, {\"h\":1}], [3, {\"h\":2}, {\"h\":3}] ], [6, [5, {\"h\":4}, {\"h\":5} ], [7, {\"h\":6}, [8, {\"h\":7}, {\"h\":8}] ] ] ]}";
 		
 		if (root1 != null && root1.decision_tree!=null && root1.decision_tree[0]!=null && root1.decision_tree[1]!=null && root1.decision_tree[2]!=null) {
 			checkLeftSubtree(root1.decision_tree[1], root1.getN());
@@ -116,7 +120,7 @@ public class HSR {
 	}
 
 	
-	public static void checkInternalNode(Root root1, int n) {
+	public static void checkInternalNode(HSRTree root1, int n) {
 		int[] record = new int[n];
 		Arrays.fill(record, 0);
 		System.out.println("");
@@ -174,7 +178,7 @@ public class HSR {
 		return record;
 	}
 	
-	public static void checkLeaf(Root root1, int n) {
+	public static void checkLeaf(HSRTree root1, int n) {
 		int[] record = new int[n];
 		Arrays.fill(record, 0);
 		System.out.println("");
@@ -329,9 +333,9 @@ public class HSR {
 	public static int maxDepth(Object o) {
 		if (o instanceof LinkedTreeMap)
 			return 0;
-		if (o instanceof Root)
-			return Math.max(maxDepth(((Root) o).decision_tree[1]),
-					maxDepth(((Root) o).decision_tree[2])) + 1;
+		if (o instanceof HSRTree)
+			return Math.max(maxDepth(((HSRTree) o).decision_tree[1]),
+					maxDepth(((HSRTree) o).decision_tree[2])) + 1;
 
 		// Then o must be arraylist
 		ArrayList oa = (ArrayList) o;
@@ -345,7 +349,7 @@ public class HSR {
 	
 	
 	
-	public static void checkQEdges(Root root, int q) {
+	public static void checkQEdges(HSRTree root, int q) {
 		int maxDepth = maxDepth(root);
 		System.out.println("");
 		System.out.println("Check if the longest root-leaf path has " + q
@@ -444,7 +448,7 @@ public class HSR {
 		return max;
 	}
 
-	public static void checkKYes(Root root, int k) {
+	public static void checkKYes(HSRTree root, int k) {
 		int leftTree = maxLeftEdges(root.decision_tree[1]) + 1;
 		int rightTree = maxLeftEdges(root.decision_tree[2]);
 		int maxLeftEdges = Math.max(leftTree, rightTree);
