@@ -2,20 +2,15 @@ package io.github.czxttkl.jsontree;
 import io.github.czxttkl.jsontree.exception.DuplicateException;
 import io.github.czxttkl.jsontree.exception.NotAppearException;
 import io.github.czxttkl.jsontree.exception.OutBoundException;
-
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.IOException;
-import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.Stack;
-
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.google.gson.JsonSyntaxException;
-import com.google.gson.internal.LinkedTreeMap;
 
 public class HSR {
 	
@@ -275,7 +270,6 @@ public class HSR {
 			}
 			return record;
 		} else {
-			int i = ((HSRTree) node).getRung();
 			record = recordLeaf(((HSRTree) node).getLeftNode(), record);
 			record = recordLeaf(((HSRTree) node).getRightNode(), record);
 			return record;
