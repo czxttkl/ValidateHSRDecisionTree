@@ -13,6 +13,7 @@ import java.util.Arrays;
 import java.util.Stack;
 
 import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
 import com.google.gson.JsonSyntaxException;
 import com.google.gson.internal.LinkedTreeMap;
 
@@ -37,11 +38,6 @@ public class HSR {
 	
 	public static void main(String[] args) {
 		
-		String json1 = "{\"decision_tree\":[4, [2, [1, {\"h\":0}, {\"h\":1}], [3, {\"h\":2}, {\"h\":3}] ], [6, [5, {\"h\":4}, {\"h\":5} ], [7, {\"h\":6}, [8, {\"h\":7}, {\"h\":8}] ] ] ]}";
-		Gson gson1 = new Gson();
-		HSRTree rootTest = gson1.fromJson(json1, HSRTree.class);
-		
-		
 		if (args.length != 5) {
 			System.out.println("Invalid arguments length.");
 			System.exit(1);
@@ -59,14 +55,12 @@ public class HSR {
 	        System.err.println("Invalid arguments. Argument must be an positive integer");
 	        System.exit(1);
 	    }
-
-		Gson gson = new Gson();
-		HSRTree root1 = null;
-
+		Gson gson = new GsonBuilder().registerTypeAdapter(HSRTree.class, new InterfaceDeserializer()).create();
+		HSRTree root = null;
 		if (args[3].equals("-s")){
 			String json = args[4];
 			try {
-			root1 = gson.fromJson(json, HSRTree.class);
+			root = gson.fromJson(json, HSRTree.class);
 			} catch (JsonSyntaxException e) {
 				System.out.println("Invalid arguments. Invalid json string.");
 				System.exit(1);
@@ -76,7 +70,7 @@ public class HSR {
 				BufferedReader br;
 				try {
 					br = new BufferedReader(new FileReader(new File(args[4]).getCanonicalPath()));
-					root1 = gson.fromJson(br, HSRTree.class);
+					root = gson.fromJson(br, HSRTree.class);
 				} catch (FileNotFoundException e) {
 					System.out.println("Invalid arguments. Invalid file name.");
 					System.exit(1);
@@ -95,13 +89,13 @@ public class HSR {
 		}
 		
 		
-		if (root1 != null && root1.decision_tree!=null && root1.decision_tree[0]!=null && root1.decision_tree[1]!=null && root1.decision_tree[2]!=null) {
-			checkLeftSubtree(root1.decision_tree[1], root1.getRung());
-			checkRightSubtree(root1.decision_tree[2], root1.getRung());
-			checkQEdges(root1, q);
-			checkKYes(root1, k);
-			checkInternalNode(root1, n);
-			checkLeaf(root1, n);
+		if (root != null && root.getLeftNode()!=null && root.getRightNode()!=null) {
+			checkLeftSubtree(root.getLeftNode(), root.getRung());
+			checkRightSubtree(root.getRightNode(), root.getRung());
+			checkQEdges(root, q);
+			checkKYes(root, k);
+			checkInternalNode(root, n);
+			checkLeaf(root, n);
 		} else {
 			System.out.println("Invalid json string.");
 			System.exit(1);
