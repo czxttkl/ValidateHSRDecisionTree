@@ -46,7 +46,7 @@ public class TestMain {
 		HSRTree hsrTreeRightRightRight = new HSRTree(8);
 		hsrTreeRightRightRight.setLeftNode(new Leaf(7));
 		hsrTreeRightRightRight.setRightNode(new Leaf(8));
-		
+
 		hsrTreeRightRight.setRightNode(hsrTreeRightRightRight);
 
 		hsrTreeRight.setLeftNode(hsrTreeRightLeft);
@@ -64,6 +64,7 @@ public class TestMain {
 		checkLeftSubtree(root1.getLeftNode(), root1.getN());
 		checkRightSubtree(root1.getRightNode(), root1.getN());
 		checkQEdges(root1, 3);
+		checkKYes(root1, 3);
 	}
 
 	public static void checkLeftSubtree(Node node, int n) {
@@ -113,6 +114,29 @@ public class TestMain {
 		if (node instanceof HSRTree)
 			return Math.max(maxDepth(((HSRTree) node).getLeftNode()), maxDepth(((HSRTree) node).getRightNode())) + 1;
 		return -1;
+	}
+
+	public static void checkKYes(HSRTree root, int k) {
+		int maxLeftEdges = maxLeftEdges(root, 0);
+		if (maxLeftEdges <= k)
+			kYesValidated = true;
+		System.out.println("");
+		System.out.println("Check if there are at most " + k + " yes from the root to any leaf: " + (kYesValidated ? "yes" : "no"));
+		System.out.println("The maximum of left edges in the tree is " + maxLeftEdges);
+	}
+
+	/**
+	 * @param side 
+	 *           1: left child of its parent;     -1: right child of its parent;     0: no parent;
+	 */
+	public static int maxLeftEdges(Node node, int side) {
+		if (node instanceof Leaf) {
+				return 0;
+		} else {
+			return Math.max(maxLeftEdges(((HSRTree)node).getLeftNode(), 1)+1, maxLeftEdges(((HSRTree)node).getRightNode(), -1));
+		}
+		
+		
 	}
 
 }
