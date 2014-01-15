@@ -50,20 +50,22 @@ public class TestMain {
 		// Create a Gson instance to convert TernaryDecisionTree Java Object into JSON String
 		Gson gson = new GsonBuilder().registerTypeAdapter(HSRTree.class, new InterfaceDeserializer()).create();
 		String jsonString = gson.toJson(hsrTreeRoot);
-		System.out.println(jsonString);
+	System.out.println(jsonString);
 		
 		HSRTree root1 = gson.fromJson(jsonString, HSRTree.class);
 		
 		checkLeftSubtree(root1.getLeftNode(), root1.getN());
+		checkRightSubtree(root1.getRightNode(), root1.getN());
 	}
 	
-	public static void checkLeftSubtree(Node object, int n) {
-		int max = findLargest(object);
-		System.out.println("");
+	public static void checkLeftSubtree(Node node, int n) {
+		int max = findLargest(node);
 		leftSubTreeValidated = n - max == 1? true : false;
+		System.out.println("");
 		System.out.println("Check if the root is one larger than the largest node in the left subtree: " + (leftSubTreeValidated?"yes":"no") );
 		System.out.println("The root is " + n + ". The largest node in the left subtree is " + max);
 	}
+	
 	
 	public static int findLargest(Node o) {
 		if (o instanceof Leaf)
@@ -73,5 +75,20 @@ public class TestMain {
 		}
 	}
 	
+	public static void checkRightSubtree(Node node, int n) {
+		int min = findSmallest(node);
+		rightSubTreeValidated = n  == min? true : false;
+		System.out.println("");
+		System.out.println("Check if the root is equal to the smallest node in the right subtree: " + (rightSubTreeValidated?"yes":"no"));
+		System.out.println("The root is " + n + ". The smallest node in the right subtree is " + min);
+	}
+	
+	public static int findSmallest(Node o) {
+		if (o instanceof Leaf)
+			return ((Leaf) o).getH();
+		else {
+			return Math.min(findSmallest(((HSRTree)o).getLeftNode()), findSmallest(((HSRTree)o).getRightNode()));
+		}
+	}
 	
 }
