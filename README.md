@@ -21,7 +21,6 @@ Example
 --------------------------------------
 ```bash
 java -jar hsr.jar 9 3 4 -s {"rung":4,"breakNode":{"rung":2,"breakNode":{"rung":1,"breakNode":{"h":0},"surviveNode":{"h":1}},"surviveNode":{"rung":3,"breakNode":{"h":2},"surviveNode":{"h":3}}},"surviveNode":{"rung":6,"breakNode":{"rung":5,"breakNode":{"h":4},"surviveNode":{"h":5}},"surviveNode":{"rung":7,"breakNode":{"h":6},"surviveNode":{"rung":8,"breakNode":{"h":7},"surviveNode":{"h":8}}}}}
-"
 ```
 
 or
@@ -38,15 +37,11 @@ http://www.ccs.neu.edu/home/lieber/courses/algorithms/cs5800/f13/piazza/hsr/HSR-
 
 JSON Notation Norms
 --------------------------------------
+HSRTree has 3 attributes:
+* `rung`: The current rung where a jar is to be dropped
+* `breakNode`: The subtree if the jar breaks after falling from the current rung
+* `surviveNode`: The subtree if the jar survives after falling from the current rung
 
-The grammar and object structure would be in an EBNF-like notation:
-
-```bash
-DTH = "{" "\"decision_tree\"" ":" <dt> DT.
-DT = Compound | Leaf.
-Compound = "[" <q> int "," <yes> DT "," <no> DT "]".
-Leaf = "{" "\"h\" " ":" <leaf> int "}".
-```
 
 Example
 --------------------------------------
