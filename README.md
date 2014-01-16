@@ -37,11 +37,14 @@ http://www.ccs.neu.edu/home/lieber/courses/algorithms/cs5800/f13/piazza/hsr/HSR-
 
 JSON Notation Norms
 --------------------------------------
-HSRTree has 3 attributes:
+HSRTree class has 3 attributes:
 * `rung`: The current rung where a jar is to be dropped
 * `breakNode`: The subtree if the jar breaks after falling from the current rung
 * `surviveNode`: The subtree if the jar survives after falling from the current rung
 
+
+Leaf class has 1 attribute:
+* `h`: The highest rung keeping jars from breaking
 
 Example
 --------------------------------------
