@@ -48,7 +48,7 @@ public class TestMain {
 		HSRTree hsrTreeRightRight = new HSRTree(7);
 		hsrTreeRightRight.setLeftNode(new Leaf(6));
 		HSRTree hsrTreeRightRightRight = new HSRTree(8);
-		hsrTreeRightRightRight.setLeftNode(new Leaf(8));
+		hsrTreeRightRightRight.setLeftNode(new Leaf(7));
 		hsrTreeRightRightRight.setRightNode(new Leaf(8));
 
 		hsrTreeRightRight.setRightNode(hsrTreeRightRightRight);
@@ -67,7 +67,7 @@ public class TestMain {
 
 		checkLeftSubtree(root1.getLeftNode(), root1.getRung());
 		checkRightSubtree(root1.getRightNode(), root1.getRung());
-		checkQEdges(root1, 3);
+		checkQEdges(root1, 4);
 		checkKYes(root1, 3);
 		checkInternalNode(root1, 9);
 		checkLeaf(root1, 9);

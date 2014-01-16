@@ -20,7 +20,8 @@ java -jar hsr.jar <n> <k> <q> {<-s "json_string"> | <-f json_file_path_name>}
 Example
 --------------------------------------
 ```bash
-java -jar hsr.jar 9 3 4 -s "{"decision_tree":[4, [2, [1, {"h":0}, {"h":1}], [3, {"h":2}, {"h":3}] ], [6, [5, {"h":4}, {"h":5} ], [7, {"h":6}, [8, {"h":7}, {"h":8}] ] ] ]}"
+java -jar hsr.jar 9 3 4 -s {"rung":4,"breakNode":{"rung":2,"breakNode":{"rung":1,"breakNode":{"h":0},"surviveNode":{"h":1}},"surviveNode":{"rung":3,"breakNode":{"h":2},"surviveNode":{"h":3}}},"surviveNode":{"rung":6,"breakNode":{"rung":5,"breakNode":{"h":4},"surviveNode":{"h":5}},"surviveNode":{"rung":7,"breakNode":{"h":6},"surviveNode":{"rung":8,"breakNode":{"h":7},"surviveNode":{"h":8}}}}}
+"
 ```
 
 or
@@ -51,9 +52,56 @@ Example
 --------------------------------------
 
 ```json
- // h = highest safe rung or leaf
-{ "decision_tree" :
-[1,{"h":0},[2,{"h":1},[3,{"h":2},{"h":3}]]]
+{
+  "rung": 4,
+  "breakNode": {
+    "rung": 2,
+    "breakNode": {
+      "rung": 1,
+      "breakNode": {
+        "h": 0
+      },
+      "surviveNode": {
+        "h": 1
+      }
+    },
+    "surviveNode": {
+      "rung": 3,
+      "breakNode": {
+        "h": 2
+      },
+      "surviveNode": {
+        "h": 3
+      }
+    }
+  },
+  "surviveNode": {
+    "rung": 6,
+    "breakNode": {
+      "rung": 5,
+      "breakNode": {
+        "h": 4
+      },
+      "surviveNode": {
+        "h": 5
+      }
+    },
+    "surviveNode": {
+      "rung": 7,
+      "breakNode": {
+        "h": 6
+      },
+      "surviveNode": {
+        "rung": 8,
+        "breakNode": {
+          "h": 7
+        },
+        "surviveNode": {
+          "h": 8
+        }
+      }
+    }
+  }
 }
 ```
 
