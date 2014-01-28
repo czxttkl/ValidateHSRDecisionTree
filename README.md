@@ -32,7 +32,7 @@ java -jar hsr.jar 9 3 4 -f test.json
 HSR Reference
 --------------------------------------
 
-http://www.ccs.neu.edu/home/lieber/courses/algorithms/cs5800/f13/piazza/hsr/HSR-problem-CS5800-1.pdf
+http://www.ccs.neu.edu/home/lieber/courses/algorithms/cs5800/sp14/labs/HSR-problem-CS5800-1.doc
 
 
 JSON Notation Norms
