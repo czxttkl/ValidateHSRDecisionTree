@@ -116,7 +116,7 @@ the largest node in the subtree and for any right subtree the root is equal to t
 
 * the longest root-leaf path has q edges.
 
-* each rung 1..n-1 appears exactly once as internal node of the tree.
+* each rung 1..n-1 appears exactly once as an internal node of the tree. (Definition of internal node: a node in a decision tree that is not a leaf.)
 
 * each rung 0..n-1 appears exactly once as a leaf.
 
